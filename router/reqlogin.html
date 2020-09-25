@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="google-signin-client_id" content="664776664738-krsgs8a2sioub9h930r69gajjhssdrvg.apps.googleusercontent.com">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>iCrowdTask SignIn</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+<script type="text/javascript" src="getcookie.js" charset=utf-8></script>
+<script type="text/javascript" src="send.js" charset=utf-8></script>
+</head>
+<script type="text/javascript" src="getcookie.js" charset=utf-8></script>
+<script type="text/javascript" src="send.js" charset=utf-8></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="https://apis.google.com/js/api:client.js" async defer></script>
+  <!-- gapi.load('auth2', function () {
+    auth2 = gapi.auth2.init({
+        client_id: id,  //第二步申请的客户端id
+        cookiepolicy: "single_host_origin"
+    }); -->
+    <script type="text/javascript" charset=utf-8>
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+  }
+
+
+var isClk =false;
+function Onclick(){
+isClk=true;
+
+}
+    function init(){
+    gapi.load('auth2', function () {
+    auth2 = gapi.auth2.init({
+        client_id: "664776664738-krsgs8a2sioub9h930r69gajjhssdrvg.apps.googleusercontent.com",  //第二步申请的客户端id
+        cookiepolicy: "single_host_origin"
+    });
+    
+});
+    }
+
+
+   // }
+
+
+    function onSignIn(googleUser) {
+      
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); 
+      // This is null if the 'email' scope is not present.
+    var id_token=googleUser.getAuthResponse().id_token;   
+    console.log("ID Token:"+id_token);
+    var verifyUrl = "https://oauth2.googleapis.com/tokeninfo?id_token=" + id_token;
+                    getRespone(verifyUrl);
+
+    }
+
+    function getRespone(url) {
+      var tempwindow=window.open();
+            $.ajax({
+                type: "GET",
+                cache: false,
+                url: url,
+                async:false,
+                success: function (res) {
+                    console.log(res);
+                      
+                      if(isClk)
+
+              location.href="reqtask.html"
+                },
+                err:function(){
+                  console.log(err)
+                  window.close();
+                }
+            });
+        }
+
+
+
+  </script>
+  
+  
+  <body>
+  <!-- <script type="text/javascript" src="getcookie.js" charset=utf-8></script>
+  <script type="text/javascript" src="usecookie.js" charset=utf-8></script> -->
+	
+<div class="container">
+  <form action="/reqlogin" method="post" id="subform">
+  <hr>
+  <div class="row">
+    <aside class="col-sm-4">
+      <h4 class="card-title mb-4 mt-1">iCrowdTask Login</h4>
+  <div class="card">
+  <article class="card-body">
+  <a href="/index.html" class="float-right btn btn-outline-primary">Sign up</a>
+  <h4 class="card-title mb-4 mt-1">Sign in</h4>
+     <form>
+      <div class="form-group">
+        <label>Your email</label>
+          <input  type="text" class="form-control" id="email" placeholder="Email"  name="email" >
+      </div> <!-- form-group// -->
+      <div class="form-group">
+        <a class="float-right" href="/sendmail.html" id="link">Forgot?</a>
+        <!-- <a class="float-right" href="mailto:email?subject=change your password&body=http://localhost:8080/reqlogin" rel="nofollow">Forget?</a> -->
+<br>
+        <label>Your password</label>
+          <input type="text"  class="form-control"  id="password" name="password"    /> <!--value="${email}"/value="${password}"/autocomplete="off"/onfocus="this.type='password'"/onfocus="this.removeAttribute('readonly');" -->
+     
+          </div> <!-- form-group// -->
+      <div class="form-group"> 
+      <div class="checkbox">
+        <label> <input type="checkbox" id="rempsw" > Save password </label>
+      </div> <!-- checkbox .// -->
+      </div> <!-- form-group// -->  
+      <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block" id="login" name="login"> Login  </button>
+         </div> <!-- form-group// -->    
+         <!-- <                                                   -->
+         <div class="form-group">
+          <div class="g-signin2" data-onsuccess="onSignIn" id="Glogin" onclick="Onclick()">Sign in with Google</div>
+      <!-- <a href="/auth/google"> -->
+        <!-- <button type="submit" class="btn btn-primary btn-block" id="Glogin"> Sign in with Google  </button></a> -->
+         </div> 
+         <!-- <a href="#" onclick="signOut();">Sign out</a> -->
+        <!-- </div>  -->
+  </form>
+  </article>
+</form>
+</div> <!-- card.// -->
+</body>
+
+</html>
